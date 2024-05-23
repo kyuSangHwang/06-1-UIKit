@@ -31,8 +31,11 @@ class ViewController: UIViewController {
 //            self?.resultLabelOne.text = "Form #1 = \(self?.formTwoTextField.text ?? "")"
 //        }, for: .editingChanged)
 
-        formOneTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        formTwoTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+//        formOneTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+//        formTwoTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        formOneTextField.addAction(UIAction(handler: textFieldDidChange), for: .editingChanged)
+        formTwoTextField.addAction(UIAction(handler: textFieldDidChange), for: .editingChanged)
     }
     
     func setupFormOne() {
@@ -88,11 +91,21 @@ class ViewController: UIViewController {
         ])
     }
     
-    @objc func textFieldDidChange(_ textField: UITextField) {
+//    @objc func textFieldDidChange(_ textField: UITextField) {
+//        if textField == formOneTextField {
+//            resultLabelOne.text = " #1=\(textField.text ?? "")"
+//        } else if textField == formTwoTextField {
+//            resultLabelTwo.text=" #2=\(textField.text ?? "")"
+//        }
+//    }
+    
+    func textFieldDidChange(_ action: UIAction) {
+        guard let textField = action.sender as? UITextField else { return }
+        
         if textField == formOneTextField {
-            resultLabelOne.text = " #1=\(textField.text ?? "")"
-        } else if textField == formTwoTextField {
-            resultLabelTwo.text=" #2=\(textField.text ?? "")"
+            resultLabelOne.text = "폼 #1 = \(textField.text ?? "")"
+        } else {
+            resultLabelTwo.text = "폼 #2 = \(textField.text ?? "")"
         }
     }
     
