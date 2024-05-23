@@ -8,12 +8,38 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        // 둘 다 가능
+        // self.navigationItem.title = "내비게이션 타이틀"
+        self.title = "내비게이션 타이틀"
+        
+        // 내비게이션 바 모양 설정
+        self.navigationController?.navigationBar.barStyle = .default
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.scrollEdgeAppearance?.backgroundColor = .systemGreen
+//        self.navigationController?.navigationBar.backgroundColor = .systemGreen
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        let leftButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(leftButtonTapped))
+        self.navigationItem.leftBarButtonItem = leftButton
+        
+        let rightButton = UIBarButtonItem(title: "완료", style: .done, target: self, action: #selector(rightButtonTapped))
+        let extraButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(extraButtonTapped))
+        self.navigationItem.rightBarButtonItems = [rightButton, extraButton]
     }
-
-
+    
+    @objc func leftButtonTapped() {
+        print("왼쪽 버튼 탭됨.")
+    }
+    
+    @objc func rightButtonTapped() {
+        print("오른쪽 버튼 탭됨.")
+    }
+    
+    @objc func extraButtonTapped() {
+        print("추가 버튼 탭됨.")
+    }
 }
 
