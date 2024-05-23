@@ -33,7 +33,7 @@ class ViewController: UIViewController, NextViewControllerDelegate {
         button.setTitle("다음 화면으로", for: .normal)
         button.addAction(UIAction { [weak self] _ in
             let nextViewController = NextViewController()
-            nextViewController.animal = Animal(name: "호랑이")
+            nextViewController.animal = Animal(name: "ViewController에서 호랑이 데이터 전달한다")
             nextViewController.delegate = self
             self?.show(nextViewController, sender: nil)
         }, for: .touchUpInside)
