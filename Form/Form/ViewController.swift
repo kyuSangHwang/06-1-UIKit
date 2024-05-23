@@ -6,22 +6,23 @@
 //
 
 import UIKit
-
 class ViewController: UIViewController, UITableViewDataSource {
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: view.bounds, style: .insetGrouped)
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = 80
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
     }()
     
     let formOneLabel = UILabel()
     let formOneTextField = UITextField()
+    let formOneSwitch = UISwitch()
     let formTwoLabel = UILabel()
     let formTwoTextField = UITextField()
     let resultLabelOne = UILabel()
     let resultLabelTwo = UILabel()
+    let resultButton = UIButton(type: .system)
     lazy var textFieldAction = UIAction(handler: textFieldDidChange)
     
     override func viewDidLoad() {
@@ -30,13 +31,25 @@ class ViewController: UIViewController, UITableViewDataSource {
         view.addSubview(tableView)
     }
     
-    // MARK: - UITableViewDataSource
+    // MARK: UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        if section == 0 {
+            return 3
+        }
+        switch section {
+        case 0:
+            return 3
+        case 1:
+            return formOneSwitch.isOn ? 2 : 0
+        case 2:
+            return 3
+        default:
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -49,9 +62,9 @@ class ViewController: UIViewController, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch section {
         case 0:
-            return "Form #1"
+            return "폼 #1"
         case 1:
-            return "Form #2"
+            return formOneSwitch.isOn ? "폼 #2" : nil
         default:
             return nil
         }
@@ -59,6 +72,9 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        cell.contentView.subviews.forEach({ view in view.removeFromSuperview() })
+        
         switch indexPath.section {
         case 0:
             setupFormOne(view: cell.contentView, indexPath: indexPath)
@@ -71,6 +87,7 @@ class ViewController: UIViewController, UITableViewDataSource {
         }
         return cell
     }
+    
     
     // 액션 개체 생성 / 삭제 코드 추가
     override func viewIsAppearing(_ animated: Bool) {
@@ -85,7 +102,6 @@ class ViewController: UIViewController, UITableViewDataSource {
         formTwoTextField.removeAction(textFieldAction, for: .editingChanged)
     }
     
-    
     func setupFormOne(view: UIView, indexPath: IndexPath) {
         if indexPath.section != 0 { return }
         switch indexPath.row {
@@ -97,7 +113,6 @@ class ViewController: UIViewController, UITableViewDataSource {
                 formOneLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 formOneLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             ])
-            
         case 1:
             formOneTextField.borderStyle = .roundedRect
             formOneTextField.placeholder = "여기에 입력하세요"
@@ -107,6 +122,16 @@ class ViewController: UIViewController, UITableViewDataSource {
                 formOneTextField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 formOneTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
                 formOneTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            ])
+        case 2:
+            formOneSwitch.translatesAutoresizingMaskIntoConstraints = false
+            
+            formOneSwitch.addAction(UIAction { [weak self] _ in self?.tableView.reloadData() }, for: .valueChanged)
+            
+            view.addSubview(formOneSwitch)
+            NSLayoutConstraint.activate([
+                formOneSwitch.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                formOneSwitch.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             ])
         default:
             break
@@ -124,7 +149,6 @@ class ViewController: UIViewController, UITableViewDataSource {
                 formTwoLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 formTwoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             ])
-            
         case 1:
             formTwoTextField.borderStyle = .roundedRect
             formTwoTextField.placeholder = "여기에 입력하세요"
@@ -158,12 +182,23 @@ class ViewController: UIViewController, UITableViewDataSource {
                 resultLabelTwo.centerYAnchor.constraint(equalTo: view.centerYAnchor),
                 resultLabelTwo.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
             ])
+        case 2:
+            resultButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            resultButton.setTitle("클릭하세요.", for: .normal)
+            resultButton.isEnabled = formOneSwitch.isOn
+            view.addSubview(resultButton)
+            
+            NSLayoutConstraint.activate([
+                resultButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                resultButton.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ])
             
         default:
             break
         }
     }
-    
+
     func textFieldDidChange(_ action: UIAction) {
         guard let textField = action.sender as? UITextField else { return }
         
@@ -175,4 +210,3 @@ class ViewController: UIViewController, UITableViewDataSource {
     }
     
 }
-
