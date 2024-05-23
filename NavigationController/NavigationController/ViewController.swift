@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, NextViewControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,12 +32,17 @@ class ViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("다음 화면으로", for: .normal)
         button.addAction(UIAction { [weak self] _ in
-            let nextViewController = UIViewController()
-            nextViewController.view.backgroundColor = .white
+            let nextViewController = NextViewController()
+            nextViewController.animal = Animal(name: "호랑이")
+            nextViewController.delegate = self
             self?.show(nextViewController, sender: nil)
         }, for: .touchUpInside)
         button.frame = CGRect(x: 100, y: 100, width: 200, height: 50)
         view.addSubview(button)
+    }
+    
+    func save(animal: Animal) {
+        print(">>> \(animal.name)")
     }
     
     @objc func leftButtonTapped() {
