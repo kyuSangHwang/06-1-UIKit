@@ -7,7 +7,7 @@
 
 import UIKit
 class CustomCell: UITableViewCell {
-    let animalImageView: UIImageView()
+    let animalImageView = UIImageView()
     let nameLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -17,7 +17,7 @@ class CustomCell: UITableViewCell {
         animalImageView.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        contentView.addSubview(animalIamgeView)
+        contentView.addSubview(animalImageView)
         contentView.addSubview(nameLabel)
         
         NSLayoutConstraint.activate([
