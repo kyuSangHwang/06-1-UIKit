@@ -22,13 +22,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let button = UIButton(type: .custom)
         button.setTitle("Add Task", for: .normal)
         button.setImage(UIImage(systemName: "plus.circle"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
         var config = UIButton.Configuration.filled()
         config.cornerStyle = .capsule
         config.imagePadding = 10.0
-        
         button.configuration = config
-        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.addAction(UIAction { [weak self] _ in
+            let addTaskViewController =  AddTaskViewController()
+            let navigationController = UINavigationController(rootViewController: addTaskViewController)
+            self?.present(navigationController, animated: true)
+        }, for: .touchUpInside)
         
         return button
     }()
