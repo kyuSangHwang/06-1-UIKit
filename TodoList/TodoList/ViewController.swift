@@ -14,7 +14,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "todoCell")
+        
         return tableView
+    }()
+    
+    private lazy var addButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("Add Task", for: .normal)
+        button.setImage(UIImage(systemName: "plus.circle"), for: .normal)
+        
+        var config = UIButton.Configuration.filled()
+        config.cornerStyle = .capsule
+        config.imagePadding = 10.0
+        
+        button.configuration = config
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
     }()
 
     override func viewDidLoad() {
@@ -22,6 +38,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.title = "TODO"
         
         view.addSubview(tableView)
+        view.addSubview(addButton)
         
         let safeArea = view.safeAreaLayoutGuide
         
@@ -29,6 +46,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             tableView.topAnchor.constraint(equalTo: safeArea.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addButton.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
     
