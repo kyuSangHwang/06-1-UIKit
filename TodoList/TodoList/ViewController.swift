@@ -57,6 +57,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         ])
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // FIXME: 개발 확인용
+        addButton.sendActions(for: .touchUpInside)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
     }
